@@ -2,6 +2,22 @@
   (:require [clojure.test :refer :all]
             [game-scheduler.core :refer :all]))
 
+(deftest possible-maches-test
+  (let [expected '((\A #{\C \D}) (\B #{\A \C \D}) (\C #{\A \B}) (\D #{\B}))]
+    (is (= (possible-maches groups (set (seq "ABCD"))) expected))))
+
+(deftest sort-accending-by-number-of-possible-opponents-test
+  (let [expected '([\C #{\A}] [\B #{\C \D}])]
+    (is (= (sort-accending-by-number-of-possible-opponents {\B #{\D \C} \C #{\A}}) expected))))
+
+(deftest remove-empty-groups-test
+  (let [expected '([\A #{\B \C}])]
+    (is (= (remove-empty-groups {\A #{\B \C} \D #{}}) expected))))
+
+(deftest find-next-match-test
+  (let [expected '(\D #{\B})]
+    (is (= (find-next-match groups (set (seq "ABCD"))) expected))))
+
 (def senarios-with-solution {"ABCD" "CDAB"
                              "ABCE" "CABE"
                              "ABCF" "CABF"
@@ -18,7 +34,7 @@
                              "BDEF" "EDBF"
                              "CDEF" "CDFE"})
 
-(deftest senarios-test
+(deftest create-schedules-for-all-senarios-test
   (doall
    (for [[senario solution]  senarios-with-solution]
      (do
