@@ -17,25 +17,20 @@
 ; Since D only can play B, that match is given.
 
 ; Group D and opponent B are removed from the data set and the loop recurs and possible-matches are:
-; ((\A #{\C}) 
-;  (\C #{\A \B}) 
-;  (\D #{\B}))
+; ((\A #{\C \D})) 
+;  (\B #{\A \C \D}) 
+;  (\C #{\A}))
 ; 
-; Now both A and D has one possible opponent.
+; Group C has only one possible opponents \A, which leaves us with:
+; ((\A #{\C \D}) 
+;  (\B #{\C \D}))
+; Now both A and B has two possible opponent.
 ; In this case the first group \A selects its only possible opponent \C
-
-; Given ACBE each group will have 2 possible opponents:
-; ((\A #{\C \E})
-;  (\B #{\A \C}) 
-;  (\C #{\A \B}) 
-;  (\D #{\B \E}))
-;
-; In this case the first group \A will select it's first possible opponent \C
-; This process continues until all matches are made 
 
 ; The commands to produce the above data structures are:
 ; (possible-matches groups (set (seq "ABCD")))
-; (possible-matches (disj groups \B) (set (seq "ABC")))
+; (possible-matches (disj groups \D) (set (seq "ACD")))
+; (possible-matches (disj groups \D \C) (set (seq "CD")))
 
 
 (def groups #{\A \B \C \D})
@@ -89,8 +84,9 @@
 (defn create-schedule [groups best-thirds result]
   (if (empty? best-thirds)
     ; Where done and return the result
+    ; The opponents will at this stage only contain one team per group
     (str/join (map :opponents (sort-by #(:group %) result)))
-    ; Where not done, lets continue
+    ; Where not done, lets continue..
     (let [next-match (apply ->Match (find-next-match groups best-thirds))
           group (:group next-match)
           third (first (:opponents next-match))]
@@ -101,7 +97,8 @@
 (defn create-schedule-for-senario [best-thirds]
   (create-schedule groups (set (seq best-thirds)) []))
 
-(create-schedule-for-senario "ABCD")
+;(create-schedule-for-senario "ABCD")
+
 
 (defn -main []
   (doall
