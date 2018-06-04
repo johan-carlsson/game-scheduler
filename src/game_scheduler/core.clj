@@ -9,14 +9,14 @@
 ; The solution is recursive and removes available groups and possible opponents as the loop progresses
 ; The structure of the data that runs in the loop looks just the valid-opponents-by-group
 
-; So given ABCD as best thirds the possible-maches will look like this in the first run (in the loop)
+; So given ABCD as best thirds the possible-matches will look like this in the first run (in the loop)
 ; ((\A #{\C \D})
 ;  (\B #{\A \C \D}) 
 ;  (\C #{\A \B}) 
 ;  (\D #{\B}))
 ; Since D only can play B, that match is given.
 
-; Group D and opponent B are removed from the data set and the loop recurs and possible-maches are:
+; Group D and opponent B are removed from the data set and the loop recurs and possible-matches are:
 ; ((\A #{\C}) 
 ;  (\C #{\A \B}) 
 ;  (\D #{\B}))
@@ -30,12 +30,12 @@
 ;  (\C #{\A \B}) 
 ;  (\D #{\B \E}))
 ;
-; In this case the first group \A will select it's first posible opponent \C
+; In this case the first group \A will select it's first possible opponent \C
 ; This process continues until all matches are made 
 
 ; The commands to produce the above data structures are:
-; (possible-maches groups (set (seq "ABCD")))
-; (possible-maches (disj groups \B) (set (seq "ABC")))
+; (possible-matches groups (set (seq "ABCD")))
+; (possible-matches (disj groups \B) (set (seq "ABC")))
 
 
 (def groups #{\A \B \C \D})
@@ -68,11 +68,12 @@
            matches))
 
 ; Removes groups that has no possible opponents left
+; TODO: The (last %) is not very clear, it means :opponents
 (defn remove-empty-groups [groups]
   (filter #(not (empty? (last %)))
           groups))
 
-(defn possible-maches [groups best-thirds]
+(defn possible-matches [groups best-thirds]
   (map
    #(list % (intersection (get valid-opponents-by-group %)
                           best-thirds))
@@ -80,7 +81,7 @@
 
 (defn find-next-match [groups best-thirds]
   (->
-   (possible-maches groups best-thirds)
+   (possible-matches groups best-thirds)
    (remove-empty-groups)
    (sort-by-opponents-count)
    (first)))

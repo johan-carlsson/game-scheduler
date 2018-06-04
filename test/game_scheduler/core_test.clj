@@ -2,9 +2,9 @@
   (:require [clojure.test :refer :all]
             [game-scheduler.core :refer :all]))
 
-(deftest possible-maches-test
+(deftest possible-matches-test
   (let [expected '((\A #{\C \D}) (\B #{\A \C \D}) (\C #{\A \B}) (\D #{\B}))]
-    (is (= (possible-maches groups (set (seq "ABCD"))) expected))))
+    (is (= (possible-matches groups (set (seq "ABCD"))) expected))))
 
 (deftest sort-ascending-by-number-of-possible-opponents-test
   (let [expected '([\C #{\A}] [\B #{\C \D}])]
