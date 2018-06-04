@@ -67,27 +67,20 @@
   (let [[group opponents] match]
     (->Match group opponents)))
 
-; (match-to-record (first {\B #{\D \C}}))
-
 (defn sort-by-opponents-count [matches]
   (sort-by #(count (:opponents (match-to-record %)))
            matches))
-
-;(sort-by-opponents-count {\B #{\D \C} \C #{\A}})
 
 ; Removes groups that has no possible opponents left
 (defn filter-empty [groups]
   (filter #(not (empty? (last %)))
           groups))
 
-; TODO: Should this be renamed to possible-groups or posible schedule?
 (defn possible-maches [groups best-thirds]
   (map
    #(list % (intersection (get valid-opponents-by-group %)
                           best-thirds))
    groups))
-
-;(possible-maches groups (set (seq "ABCD")))
 
 (defn find-next-match [groups best-thirds]
   (->
@@ -95,8 +88,6 @@
    (filter-empty)
    (sort-by-opponents-count)
    (first)))
-
-; (find-next-match groups (set (seq "ABCD")))
 
 (defn create-schedule [groups best-thirds result]
   (let [next-match (match-to-record (find-next-match groups best-thirds))]
@@ -115,11 +106,6 @@
 (defn create-schedule-for-senario [best-thirds]
   (create-schedule groups (set (seq best-thirds)) []))
 
-; Only for testing
-; ################
-;(println (create-schedule-for-senario "ABCD"))
-
-; Manual test
 (defn -main []
   (doall
    (for [senario senarios]
