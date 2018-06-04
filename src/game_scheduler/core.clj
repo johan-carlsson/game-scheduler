@@ -14,9 +14,8 @@
 ;  (\B #{\A \C \D}) 
 ;  (\C #{\A \B}) 
 ;  (\D #{\B}))
-;
-;
 ; Since D only can play B, that match is given.
+
 ; Group D and opponent B are removed from the data set and the loop recurs and possible-maches are:
 ; ((\A #{\C}) 
 ;  (\C #{\A \B}) 
@@ -63,12 +62,9 @@
                "CDEF"])
 
 (defrecord Match [group opponents])
-(defn match-to-record [match]
-  (let [[group opponents] match]
-    (->Match group opponents)))
 
 (defn sort-by-opponents-count [matches]
-  (sort-by #(count (:opponents (match-to-record %)))
+  (sort-by #(count (:opponents (apply ->Match %)))
            matches))
 
 ; Removes groups that has no possible opponents left
@@ -90,23 +86,22 @@
    (first)))
 
 (defn create-schedule [groups best-thirds result]
-  (let [next-match (match-to-record (find-next-match groups best-thirds))]
-    (if (empty? best-thirds)
-      ; Where done and return the result
-      ; TODO: Should result be a Record?
-      (map last
-           (sort-by #(first %) result))
-        ; Where not done, lets continue
-      (let [group (:group next-match)
-            third (first (:opponents next-match))]
-        (create-schedule (disj groups group)
-                         (disj best-thirds third)
-                         (conj result (hash-map group third)))))))
+  (if (empty? best-thirds)
+    ; Where done and return the result
+    (apply str (map :opponents result))
+    ; Where not done, lets continue
+    (let [next-match (apply ->Match (find-next-match groups best-thirds))
+          group (:group next-match)
+          third (first (:opponents next-match))]
+      (create-schedule (disj groups group)
+                       (disj best-thirds third)
+                       (conj result (->Match group third))))))
 
 (defn create-schedule-for-senario [best-thirds]
   (create-schedule groups (set (seq best-thirds)) []))
 
+(create-schedule-for-senario "ABCD")
 (defn -main []
   (doall
    (for [senario senarios]
-     (println senario "will play" (apply str (map last (create-schedule-for-senario senario)))))))
+     (println senario "will play" (create-schedule-for-senario senario)))))
