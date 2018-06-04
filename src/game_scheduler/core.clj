@@ -101,7 +101,6 @@
 (defn create-schedule-for-senario [best-thirds]
   (create-schedule groups (set (seq best-thirds)) []))
 
-(create-schedule-for-senario "ABCD")
 (defn -main []
   (doall
    (for [senario senarios]
