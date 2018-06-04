@@ -4,19 +4,23 @@
 
 (deftest possible-matches-test
   (let [expected '((\A #{\C \D}) (\B #{\A \C \D}) (\C #{\A \B}) (\D #{\B}))]
-    (is (= (possible-matches groups (set (seq "ABCD"))) expected))))
+    (is (= (possible-matches groups (set (seq "ABCD")))
+           expected))))
 
 (deftest sort-ascending-by-number-of-possible-opponents-test
   (let [expected '([\C #{\A}] [\B #{\C \D}])]
-    (is (= (sort-by-opponents-count {\B #{\D \C} \C #{\A}}) expected))))
+    (is (= (sort-by-opponents-count {\B #{\D \C} \C #{\A}})
+           expected))))
 
 (deftest remove-empty-groups-test
   (let [expected '([\A #{\B \C}])]
-    (is (= (remove-empty-groups {\A #{\B \C} \D #{}}) expected))))
+    (is (= (remove-empty-groups {\A #{\B \C} \D #{}})
+           expected))))
 
 (deftest find-next-match-test
   (let [expected '(\D #{\B})]
-    (is (= (find-next-match groups (set (seq "ABCD"))) expected))))
+    (is (= (find-next-match groups (set (seq "ABCD")))
+           expected))))
 
 (def senarios-with-solution {"ABCD" "CDAB"
                              "ABCE" "CABE"
@@ -38,4 +42,5 @@
   (doall
    (for [[senario solution]  senarios-with-solution]
      (do
-       (is (= (create-schedule-for-senario senario) solution))))))
+       (is (= (create-schedule-for-senario senario)
+              solution))))))
