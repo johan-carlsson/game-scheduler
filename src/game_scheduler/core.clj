@@ -89,7 +89,7 @@
 (defn create-schedule [groups best-thirds result]
   (if (empty? best-thirds)
     ; Where done and return the result
-    (apply str (map :opponents result))
+    (str/join (:opponents result))
     ; Where not done, lets continue
     (let [next-match (apply ->Match (find-next-match groups best-thirds))
           group (:group next-match)
