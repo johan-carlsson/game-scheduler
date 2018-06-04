@@ -6,13 +6,13 @@
   (let [expected '((\A #{\C \D}) (\B #{\A \C \D}) (\C #{\A \B}) (\D #{\B}))]
     (is (= (possible-maches groups (set (seq "ABCD"))) expected))))
 
-(deftest sort-accending-by-number-of-possible-opponents-test
+(deftest sort-ascending-by-number-of-possible-opponents-test
   (let [expected '([\C #{\A}] [\B #{\C \D}])]
-    (is (= (sort-accending-by-number-of-possible-opponents {\B #{\D \C} \C #{\A}}) expected))))
+    (is (= (sort-by-opponents-count {\B #{\D \C} \C #{\A}}) expected))))
 
 (deftest remove-empty-groups-test
   (let [expected '([\A #{\B \C}])]
-    (is (= (remove-empty-groups {\A #{\B \C} \D #{}}) expected))))
+    (is (= (filter-empty {\A #{\B \C} \D #{}}) expected))))
 
 (deftest find-next-match-test
   (let [expected '(\D #{\B})]

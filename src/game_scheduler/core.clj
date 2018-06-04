@@ -1,7 +1,8 @@
-(ns game-scheduler.core)
-(require '[clojure.string :as str])
-(require '[clojure.set :refer [intersection]])
+(ns game-scheduler.core
+  (:require [clojure.string :as str]
+            [clojure.set :refer [intersection]]))
 
+; Each group has a given set of possible/valid opponents. The opponents are also called best-thirds in this code.
 ; The group that has the least number of possible opponents gets to select it's opponent first.
 ; If two or more groups has the same number of possible opponents the first one gets to make the selection (everything is sorted/ordered)
 ; It will always select the first opponent in its list of possible opponents
@@ -67,40 +68,44 @@
     (->Match group opponents)))
 
 ; (match-to-record (first {\B #{\D \C}}))
-; (apply match-to-record {\B #{\D \C}})
 
-(defn sort-accending-by-number-of-possible-opponents [matches]
-  (sort-by #(count (:opponents (match-to-record %))) matches))
+(defn sort-by-opponents-count [matches]
+  (sort-by #(count (:opponents (match-to-record %)))
+           matches))
 
-; (sort-accending-by-number-of-possible-opponents {\B #{\D \C} \C #{\A}})
+;(sort-by-opponents-count {\B #{\D \C} \C #{\A}})
 
 ; Removes groups that has no possible opponents left
-(defn remove-empty-groups [groups]
-  (filter #(not (empty? (last %))) groups))
+(defn filter-empty [groups]
+  (filter #(not (empty? (last %)))
+          groups))
 
-; TODO: Should this be renamed to possible-groups
+; TODO: Should this be renamed to possible-groups or posible schedule?
 (defn possible-maches [groups best-thirds]
   (map
-   #(list % (intersection (get valid-opponents-by-group %) best-thirds))
+   #(list % (intersection (get valid-opponents-by-group %)
+                          best-thirds))
    groups))
 
-; (possible-maches groups (set (seq "ABCD")))
+;(possible-maches groups (set (seq "ABCD")))
 
-; TODO: Should i rename match to game next-game
 (defn find-next-match [groups best-thirds]
   (->
    (possible-maches groups best-thirds)
-   (remove-empty-groups)
-   (sort-accending-by-number-of-possible-opponents)
+   (filter-empty)
+   (sort-by-opponents-count)
    (first)))
+
 ; (find-next-match groups (set (seq "ABCD")))
 
 (defn create-schedule [groups best-thirds result]
   (let [next-match (match-to-record (find-next-match groups best-thirds))]
     (if (empty? best-thirds)
       ; Where done and return the result
-      (map last (sort-by #(first %) result))
-      ; Where not done, lets continue
+      ; TODO: Should result be a Record?
+      (map last
+           (sort-by #(first %) result))
+        ; Where not done, lets continue
       (let [group (:group next-match)
             third (first (:opponents next-match))]
         (create-schedule (disj groups group)
@@ -110,7 +115,9 @@
 (defn create-schedule-for-senario [best-thirds]
   (create-schedule groups (set (seq best-thirds)) []))
 
-(println (create-schedule-for-senario "ABCD"))
+; Only for testing
+; ################
+;(println (create-schedule-for-senario "ABCD"))
 
 ; Manual test
 (defn -main []
