@@ -113,5 +113,7 @@
 (println (create-schedule-for-senario "ABCD"))
 
 ; Manual test
-(for [senario senarios]
-  (println senario (apply str (map last (create-schedule-for-senario senario)))))
+(defn -main []
+  (doall
+   (for [senario senarios]
+     (println senario "will play" (apply str (map last (create-schedule-for-senario senario)))))))
