@@ -68,7 +68,7 @@
            matches))
 
 ; Removes groups that has no possible opponents left
-(defn filter-empty [groups]
+(defn remove-empty-groups [groups]
   (filter #(not (empty? (last %)))
           groups))
 
@@ -81,7 +81,7 @@
 (defn find-next-match [groups best-thirds]
   (->
    (possible-maches groups best-thirds)
-   (filter-empty)
+   (remove-empty-groups)
    (sort-by-opponents-count)
    (first)))
 

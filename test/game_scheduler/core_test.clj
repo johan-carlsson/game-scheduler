@@ -12,7 +12,7 @@
 
 (deftest remove-empty-groups-test
   (let [expected '([\A #{\B \C}])]
-    (is (= (filter-empty {\A #{\B \C} \D #{}}) expected))))
+    (is (= (remove-empty-groups {\A #{\B \C} \D #{}}) expected))))
 
 (deftest find-next-match-test
   (let [expected '(\D #{\B})]
