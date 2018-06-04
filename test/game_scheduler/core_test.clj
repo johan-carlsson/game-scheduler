@@ -38,4 +38,4 @@
   (doall
    (for [[senario solution]  senarios-with-solution]
      (do
-       (is (= (create-schedule-for-senario senario))) solution))))
+       (is (= (create-schedule-for-senario senario) solution))))))

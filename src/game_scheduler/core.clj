@@ -89,7 +89,7 @@
 (defn create-schedule [groups best-thirds result]
   (if (empty? best-thirds)
     ; Where done and return the result
-    (str/join (:opponents result))
+    (str/join (map :opponents (sort-by #(:group %) result)))
     ; Where not done, lets continue
     (let [next-match (apply ->Match (find-next-match groups best-thirds))
           group (:group next-match)
@@ -100,6 +100,8 @@
 
 (defn create-schedule-for-senario [best-thirds]
   (create-schedule groups (set (seq best-thirds)) []))
+
+(create-schedule-for-senario "ABCD")
 
 (defn -main []
   (doall
