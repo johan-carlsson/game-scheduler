@@ -40,21 +40,21 @@
                                \C #{\A \B \F}
                                \D #{\B \E \F}})
 
-(def senarios ["ABCD"
-               "ABCE"
-               "ABCF"
-               "ABDE"
-               "ABDF"
-               "ABEF"
-               "ACDE"
-               "ACDF"
-               "ACEF"
-               "ADEF"
-               "BCDE"
-               "BCDF"
-               "BCEF"
-               "BDEF"
-               "CDEF"])
+(def scenarios ["ABCD"
+                "ABCE"
+                "ABCF"
+                "ABDE"
+                "ABDF"
+                "ABEF"
+                "ACDE"
+                "ACDF"
+                "ACEF"
+                "ADEF"
+                "BCDE"
+                "BCDF"
+                "BCEF"
+                "BDEF"
+                "CDEF"])
 
 (defrecord Match [group opponents])
 
@@ -87,13 +87,13 @@
               (disj best-thirds third)
               (conj result (->Match group third))))))
 
-(defn create-schedule-for-senario [best-thirds]
+(defn create-schedule-for-scenario [best-thirds]
   (create-schedule groups (set (seq best-thirds)) []))
 
-;(create-schedule-for-senario "ABCD")
+;(create-schedule-for-scenario "ABCD")
 
 
 (defn -main []
   (doall
-   (for [senario senarios]
-     (println senario "will play" (create-schedule-for-senario senario)))))
+   (for [scenario scenarios]
+     (println scenario "will play" (create-schedule-for-scenario scenario)))))

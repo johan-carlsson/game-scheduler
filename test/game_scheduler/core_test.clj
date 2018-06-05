@@ -17,30 +17,30 @@
     (is (= (find-next-match groups (set (seq "ABCD")))
            expected))))
 
-(deftest senario-cdef-test
+(deftest scenario-cdef-test
   (let [expected "CDFE"]
-    (is (= (create-schedule-for-senario "CDEF")
+    (is (= (create-schedule-for-scenario "CDEF")
            expected))))
 
-(def senarios-with-solution {"ABCD" "CDAB"
-                             "ABCE" "CABE"
-                             "ABCF" "CABF"
-                             "ABDE" "DABE"
-                             "ABDF" "DABF"
-                             "ABEF" "EABF"
-                             "ACDE" "CDAE"
-                             "ACDF" "CDAF"
-                             "ACEF" "CAFE"
-                             "ADEF" "DAFE"
-                             "BCDE" "CDBE"
-                             "BCDF" "CDBF"
-                             "BCEF" "ECBF"
-                             "BDEF" "EDBF"
-                             "CDEF" "CDFE"})
+(def scenarios-with-solution {"ABCD" "CDAB"
+                              "ABCE" "CABE"
+                              "ABCF" "CABF"
+                              "ABDE" "DABE"
+                              "ABDF" "DABF"
+                              "ABEF" "EABF"
+                              "ACDE" "CDAE"
+                              "ACDF" "CDAF"
+                              "ACEF" "CAFE"
+                              "ADEF" "DAFE"
+                              "BCDE" "CDBE"
+                              "BCDF" "CDBF"
+                              "BCEF" "ECBF"
+                              "BDEF" "EDBF"
+                              "CDEF" "CDFE"})
 
-(deftest create-schedules-for-all-senarios-test
+(deftest create-schedules-for-all-scenarios-test
   (doall
-   (for [[senario solution]  senarios-with-solution]
+   (for [[scenario solution]  scenarios-with-solution]
      (do
-       (is (= (create-schedule-for-senario senario)
+       (is (= (create-schedule-for-scenario scenario)
               solution))))))
