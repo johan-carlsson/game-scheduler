@@ -90,9 +90,9 @@
     (let [next-match (apply ->Match (find-next-match groups best-thirds))
           group (:group next-match)
           third (first (:opponents next-match))]
-      (create-schedule (disj groups group)
-                       (disj best-thirds third)
-                       (conj result (->Match group third))))))
+      (recur  (disj groups group)
+              (disj best-thirds third)
+              (conj result (->Match group third))))))
 
 (defn create-schedule-for-senario [best-thirds]
   (create-schedule groups (set (seq best-thirds)) []))
