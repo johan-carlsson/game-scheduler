@@ -58,14 +58,22 @@
 
 (defrecord Match [group opponents])
 
+(defn count-opponents [match]
+  (count (:opponents (apply ->Match match))))
+
 (defn sort-by-opponents-count [matches]
-  (sort-by #(count (:opponents (apply ->Match %)))
+  (sort-by count-opponents
            matches))
+
+(defn possible-opponents [group best-thirds]
+  (intersection (get valid-opponents-by-group group)
+                best-thirds))
+
+(possible-opponents \A #{\A \B \D})
 
 (defn possible-matches [groups best-thirds]
   (map
-   #(list % (intersection (get valid-opponents-by-group %)
-                          best-thirds))
+   #(list % (possible-opponents % best-thirds))
    groups))
 
 (defn find-next-match [groups best-thirds]

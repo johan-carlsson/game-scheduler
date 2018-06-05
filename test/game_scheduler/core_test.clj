@@ -2,6 +2,21 @@
   (:require [clojure.test :refer :all]
             [game-scheduler.core :refer :all]))
 
+(deftest count-opponents-test
+  (let [expected 2]
+    (is (=  (count-opponents '(\A #{\C \D}))
+            expected))))
+
+(deftest sort-by-opponents-count-test
+  (let [expected '([\D #{\B}] [\C #{\A \B}] [\B #{\A \C \D}])]
+    (is (= (sort-by-opponents-count {\B #{\A \C \D} \C #{\A \B} \D #{\B}})
+           expected))))
+
+(deftest possible-opponents-test
+  (let [expected #{\D}]
+    (is (= (possible-opponents \A #{\A \B \D})
+           expected))))
+
 (deftest possible-matches-test
   (let [expected '((\A #{\C \D}) (\B #{\A \C \D}) (\C #{\A \B}) (\D #{\B}))]
     (is (= (possible-matches groups (set (seq "ABCD")))
