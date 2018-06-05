@@ -17,6 +17,11 @@
     (is (= (find-next-match groups (set (seq "ABCD")))
            expected))))
 
+(deftest senario-cdef-test
+  (let [expected "CDFE"]
+    (is (= (create-schedule-for-senario "CDEF")
+           expected))))
+
 (def senarios-with-solution {"ABCD" "CDAB"
                              "ABCE" "CABE"
                              "ABCF" "CABF"
