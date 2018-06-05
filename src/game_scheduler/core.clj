@@ -62,12 +62,6 @@
   (sort-by #(count (:opponents (apply ->Match %)))
            matches))
 
-; Removes groups that has no possible opponents left
-; TODO: The (last %) is not very clear, it means :opponents
-(defn remove-empty-groups [groups]
-  (filter #(not (empty? (last %)))
-          groups))
-
 (defn possible-matches [groups best-thirds]
   (map
    #(list % (intersection (get valid-opponents-by-group %)
@@ -77,7 +71,6 @@
 (defn find-next-match [groups best-thirds]
   (->
    (possible-matches groups best-thirds)
-   (remove-empty-groups)
    (sort-by-opponents-count)
    (first)))
 

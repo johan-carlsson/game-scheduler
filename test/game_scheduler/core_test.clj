@@ -12,11 +12,6 @@
     (is (= (sort-by-opponents-count {\B #{\D \C} \C #{\A}})
            expected))))
 
-(deftest remove-empty-groups-test
-  (let [expected '([\A #{\B \C}])]
-    (is (= (remove-empty-groups {\A #{\B \C} \D #{}})
-           expected))))
-
 (deftest find-next-match-test
   (let [expected '(\D #{\B})]
     (is (= (find-next-match groups (set (seq "ABCD")))
