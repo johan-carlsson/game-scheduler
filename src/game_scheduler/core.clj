@@ -7,9 +7,8 @@
 ; If two or more groups has the same number of possible opponents the first one gets to make the selection (everything is sorted/ordered)
 ; It will always select the first opponent in its list of possible opponents
 ; The solution is recursive and removes available groups and possible opponents as the loop progresses
-; The structure of the data that runs in the loop looks just the valid-opponents-by-group
 
-; So given ABCD as best thirds the possible-matches will look like this in the first run (in the loop)
+; So given ABCD as best thirds the possible-matches will look like this in the first iteration
 ; ({:group \A, :opponents #{\C \D}} 
 ;  {:group \B, :opponents #{\A \C \D}} 
 ;  {:group \C, :opponents #{\A \B}} 
@@ -17,7 +16,7 @@
 
 ; Since D only can play B, that match is given.
 
-; Group D and opponent B are removed from the data set and the loop recurs and possible-matches are:
+; Group D and opponent B are removed and the loop recurs and possible-matches are:
 ; ({:group \A, :opponents #{\C \D}} 
 ;  {:group \B, :opponents #{\A \C \D}} 
 ;  {:group \C, :opponents #{\A}})
@@ -27,7 +26,7 @@
 ;  {:group \B, :opponents #{\C \D}})
 
 ; Now both A and B has two possible opponent.
-; In this case the first group \A selects its only possible opponent \C
+; In this case the first group: \A selects its first opponent: \C
 
 ; The commands to produce the above data structures are:
 ; (possible-matches groups (set (seq "ABCD")))
