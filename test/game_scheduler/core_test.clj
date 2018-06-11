@@ -4,12 +4,13 @@
 
 (deftest count-opponents-test
   (let [expected 2]
-    (is (=  (count-opponents '(\A #{\C \D}))
+    (is (=  (count-opponents (->Match \A #{\C \D}))
             expected))))
 
 (deftest sort-by-opponents-count-test
-  (let [expected '([\D #{\B}] [\C #{\A \B}] [\B #{\A \C \D}])]
-    (is (= (sort-by-opponents-count {\B #{\A \C \D} \C #{\A \B} \D #{\B}})
+  (let [expected (map #(apply ->Match %)
+                      {\D #{\B} \C #{\A \B} \B #{\A \C \D}})]
+    (is (= (sort-by-opponents-count (map #(apply ->Match %) {\B #{\A \C \D} \C #{\A \B} \D #{\B}}))
            expected))))
 
 (deftest possible-opponents-test
@@ -18,17 +19,13 @@
            expected))))
 
 (deftest possible-matches-test
-  (let [expected '((\A #{\C \D}) (\B #{\A \C \D}) (\C #{\A \B}) (\D #{\B}))]
+  (let [expected (map #(apply ->Match %)
+                      {\A #{\C \D} \B #{\A \C \D} \C #{\A \B} \D #{\B}})]
     (is (= (possible-matches groups (set (seq "ABCD")))
            expected))))
 
-(deftest sort-ascending-by-number-of-possible-opponents-test
-  (let [expected '([\C #{\A}] [\B #{\C \D}])]
-    (is (= (sort-by-opponents-count {\B #{\D \C} \C #{\A}})
-           expected))))
-
 (deftest find-next-match-test
-  (let [expected '(\D #{\B})]
+  (let [expected (->Match \D #{\B})]
     (is (= (find-next-match groups (set (seq "ABCD")))
            expected))))
 
