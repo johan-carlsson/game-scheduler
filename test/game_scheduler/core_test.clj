@@ -3,36 +3,30 @@
             [game-scheduler.core :refer :all]))
 
 (deftest count-opponents-test
-  (let [expected 2]
-    (is (=  (count-opponents (->Match \A #{\C \D}))
-            expected))))
+  (is (=  2
+          (count-opponents (->Match \A #{\C \D})))))
 
 (deftest sort-by-opponents-count-test
-  (let [expected (map #(apply ->Match %)
-                      {\D #{\B} \C #{\A \B} \B #{\A \C \D}})]
-    (is (= (sort-by-opponents-count (map #(apply ->Match %) {\B #{\A \C \D} \C #{\A \B} \D #{\B}}))
-           expected))))
+  (is (= (map #(apply ->Match %)
+              {\D #{\B} \C #{\A \B} \B #{\A \C \D}})
+         (sort-by-opponents-count (map #(apply ->Match %) {\B #{\A \C \D} \C #{\A \B} \D #{\B}})))))
 
 (deftest possible-opponents-test
-  (let [expected #{\D}]
-    (is (= (possible-opponents \A #{\A \B \D})
-           expected))))
+  (is (= #{\D}
+         (possible-opponents \A #{\A \B \D}))))
 
 (deftest possible-matches-test
-  (let [expected (map #(apply ->Match %)
-                      {\A #{\C \D} \B #{\A \C \D} \C #{\A \B} \D #{\B}})]
-    (is (= (possible-matches groups (set (seq "ABCD")))
-           expected))))
+  (is (= (map #(apply ->Match %)
+              {\A #{\C \D} \B #{\A \C \D} \C #{\A \B} \D #{\B}})
+         (possible-matches groups (set (seq "ABCD"))))))
 
 (deftest find-next-match-test
-  (let [expected (->Match \D #{\B})]
-    (is (= (find-next-match groups (set (seq "ABCD")))
-           expected))))
+  (is (= (->Match \D #{\B})
+         (find-next-match groups (set (seq "ABCD"))))))
 
 (deftest scenario-cdef-test
-  (let [expected "CDFE"]
-    (is (= (create-schedule-for-scenario "CDEF")
-           expected))))
+  (is (= "CDFE"
+         (create-schedule-for-scenario "CDEF"))))
 
 (def scenarios-with-solution {"ABCD" "CDAB"
                               "ABCE" "CABE"
@@ -54,5 +48,5 @@
   (doall
    (for [[scenario solution]  scenarios-with-solution]
      (do
-       (is (= (create-schedule-for-scenario scenario)
-              solution))))))
+       (is (= solution
+              (create-schedule-for-scenario scenario)))))))
