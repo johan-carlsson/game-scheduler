@@ -34,12 +34,12 @@
 ; (possible-matches (disj groups \D \C) (set (seq "CD")))
 
 
-(def groups #{\A \B \C \D})
+(def groups (sorted-set \A \B \C \D))
 
-(def valid-opponents-by-group {\A #{\C \D \E}
-                               \B #{\A \C \D}
-                               \C #{\A \B \F}
-                               \D #{\B \E \F}})
+(def valid-opponents-by-group {\A (sorted-set \C \D \E)
+                               \B (sorted-set \A \C \D)
+                               \C (sorted-set \A \B \F)
+                               \D (sorted-set \B \E \F)})
 
 (def scenarios ["ABCD"
                 "ABCE"
