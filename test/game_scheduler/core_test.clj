@@ -7,9 +7,8 @@
           (count-opponents (->Match \A #{\C \D})))))
 
 (deftest sort-by-opponents-count-test
-  (is (= (map #(apply ->Match %)
-              {\D #{\B} \C #{\A \B} \B #{\A \C \D}})
-         (sort-by-opponents-count (map #(apply ->Match %) {\B #{\A \C \D} \C #{\A \B} \D #{\B}})))))
+  (is (= [{\D #{\B} \C #{\A \B} \B #{\A \C \D}}]
+         (sort-by-opponents-count  [{\B #{\A \C \D} \C #{\A \B} \D #{\B}}]))))
 
 (deftest possible-opponents-test
   (is (= #{\D}
