@@ -21,11 +21,11 @@
 ;  {:group \B, :opponents #{\A \C \D}} 
 ;  {:group \C, :opponents #{\A}})
 ; 
-; Group C has only one possible opponents \A, which leaves us with:
+; Group C has only one possible opponent \A, which leaves us with:
 ; ({:group \A, :opponents #{\C \D}} 
 ;  {:group \B, :opponents #{\C \D}})
 
-; Now both A and B has two possible opponent.
+; Now both A and B has two possible opponents.
 ; In this case the first group: \A selects its first opponent: \C
 
 ; The commands to produce the above data structures are:
