@@ -83,11 +83,11 @@
 
 (defn create-schedule [groups best-thirds result]
   (if (empty? best-thirds)
-    ; Where done and return the result
+    ; Lets return the result
     ; The opponents will at this stage only contain one team per group
     (str/join (map :opponents (sort-by :group result)))
     ; Where not done, lets continue..
-    (let [{group :group opponents :opponents} (find-next-match groups best-thirds)
+    (let [{:keys [group opponents]} (find-next-match groups best-thirds)
           best-third (first opponents)]
       (recur  (disj groups group)
               (disj best-thirds best-third)
